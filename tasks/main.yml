@@ -1,0 +1,26 @@
+---
+- name: Create necessary directories for stack
+  file:
+    state: directory
+    path: "{{ item }}"
+  with_items:
+    - "{{ cwl_destination_build_path }}"
+
+- name: Create CloudWatch Logs Destination Template
+  template:
+    src: cwl-destination.json.j2
+    dest: "{{ cwl_destination_template }}"
+
+- name: Run CloudFormation
+  cloudformation:
+    template: "{{ cwl_destination_template }}"
+    stack_name: "{{ cwl_destination_stack_name }}"
+    region: "{{ cwl_destination_region }}"
+    template_parameters:
+      CWLDestinationName: "{{ cwl_destination_name }}"
+      CWLDestinationPolicy: "{{ cwl_destination_policy }}"
+      CWLRoleARN: "{{ cwl_role_arn }}"
+      CWLTargetARN: "{{ cwl_target_arn }}"
+    security_token: "{{ lookup('env', 'AWS_SESSION_TOKEN' ) }}"
+    tags: "{{ cwl_destination_tags }}"
+  register: cwl_destination_stack

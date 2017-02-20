@@ -1,0 +1,40 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "{{ cwl_destination_stack_description | default('') }}",
+  "Parameters" : {
+    "CWLDestinationName" : {
+      "Description" : "Name for the CloudWatch Logs Destination being created.",
+      "Type" : "String"
+    },
+    "CWLDestinationPolicy" : {
+      "Description" : "IAM permissions policy for who can write to the newly created destination.",
+      "Type": "String"
+    },
+    "CWLRoleARN" : {
+      "Description" : "IAM Role ARN that permits CloudWatch to send logs to the target resource.",
+      "Type" : "String"
+    },
+    "CWLTargetARN" : {
+      "Description" : "ARN for the target AWS resources that will receive log events.",
+      "Type" : "String"
+    }
+  },
+  "Resources" : {
+    "CloudWatchLogsDestination" : {
+      "Type" : "AWS::Logs::Destination",
+      "Properties" : {
+        "DestinationName" : "",
+        "DestinationPolicy" : "",
+        "RoleArn" : "",
+        "TargetArn" : ""
+      }
+    }
+  },
+  "Outputs" : {
+    "CWDestinationARN" : {
+      "Value" : {
+        "Fn::Join" : [ "", [ "arn:aws:logs:", { "Ref" : "AWS::Region" }, ":destination:", { "Ref" : "CWLDestinationName" } ] ]
+      }
+    }
+  }
+}

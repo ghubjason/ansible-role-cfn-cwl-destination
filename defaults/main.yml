@@ -1,0 +1,4 @@
+cwl_destination_stack_name: "{{ environ }}-{{ cwl_destination_stack_prefix | default(omit) }}cwl-destination"
+cwl_destination_build_path: "build"
+cwl_destination_template: "{{ cwl_destination_build_path }}/{{ cwl_destination_stack_name }}.json"
+cwl_destination_region: "us-west-2"
